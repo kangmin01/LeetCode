@@ -37,35 +37,28 @@
 //     return res;
 // };
 
-function canPartition(s, target, index = 0, memo = {}) {
-  if (index === s.length) return target === 0;
-  let key = `${index},${target}`;
-  if (memo.hasOwnProperty(key)) return memo[key];
-  
-  let num = 0;
-  // index부터 시작하여 가능한 모든 숫자를 만들며 분할 시도
-  for (let j = index; j < s.length; j++) {
-    num = num * 10 + parseInt(s[j]);
-    if (num > target) break; // 목표를 초과하면 더 진행할 필요 없음.
-    if (canPartition(s, target - num, j + 1, memo)) {
-      memo[key] = true;
-      return true;
-    }
-  }
-  
-  memo[key] = false;
-  return false;
-}
-
 function punishmentNumber(n) {
-  let res = 0;
-  for (let i = 1; i <= n; i++) {
-    const square = i * i;
-    const numStr = square.toString();
-    // 재귀를 통한 분할 탐색
-    if (canPartition(numStr, i)) {
-      res += square;
+    function canPartition(num, target, start) {
+        if (target === 0 && start === num.length) return true;
+        if (start >= num.length) return false;
+        
+        let sum = 0;
+        for (let i = start; i < num.length; i++) {
+            sum = sum * 10 + parseInt(num[i], 10);
+            if (sum > target) break;
+            if (canPartition(num, target - sum, i + 1)) return true;
+        }
+        
+        return false;
     }
-  }
-  return res;
+    
+    let totalSum = 0;
+    for (let i = 1; i <= n; i++) {
+        let squareStr = (i * i).toString();
+        if (canPartition(squareStr, i, 0)) {
+            totalSum += i * i;
+        }
+    }
+    
+    return totalSum;
 }
