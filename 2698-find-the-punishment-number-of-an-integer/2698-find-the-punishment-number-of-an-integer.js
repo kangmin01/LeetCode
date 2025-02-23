@@ -67,7 +67,7 @@ function canPartitionMemo(stringNum, target, index, currentSum, memo) {
 }
 
 // 메인 함수: 1부터 n까지 각 숫자에 대해 조건을 검사하고, 해당 제곱을 누적합니다.
-function punishmentNumberMemo(n) {
+function punishmentNumber(n) {
   let result = 0;
   for (let i = 1; i <= n; i++) {
     const square = i * i;
