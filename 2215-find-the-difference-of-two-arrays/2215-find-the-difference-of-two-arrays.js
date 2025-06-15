@@ -15,8 +15,8 @@ var findDifference = function (nums1, nums2) {
         set2.add(nums2[i])
     }
 
-    const arr1 = [...set1].filter((item) => !nums2.includes(item))
-    const arr2 = [...set2].filter((item) => !nums1.includes(item))
+    const arr1 = [...set1].filter((item) => !set2.has(item))
+    const arr2 = [...set2].filter((item) => !set1.has(item))
 
     return [arr1, arr2]
 };
