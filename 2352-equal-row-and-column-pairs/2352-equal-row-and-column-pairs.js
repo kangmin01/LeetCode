@@ -1,43 +1,23 @@
-/**
- * @param {number[][]} grid
- * @return {number}
- */
-var equalPairs = function (grid) {
-    // const map = new Map();
-    // // const columns = new Array(grid.length).fill("")
+function equalPairs(grid) {
+  const n = grid.length;
+  const colMap = new Map();
 
-    // for (let i = 0; i < grid.length; i++) {
-    //     const str = grid[i].join("");
-    //     map.set(str, map.get(str) + 1 || 1)
-    // }
-
-    // // columns 배열 추출?해서 비교하려고 했는데 시간초과.
-
-    // (1)
-    // const rows = grid.map(arr => arr.join())
-    // const columns = grid[0].map((col, i) => grid.map(row => row[i]).join())
-    // let count = 0
-    // for (let row of rows) {
-    //     for (let column of columns) {
-    //         if (row === column) count++
-    //     }
-    // }
-    // return count
-
-    // (2)
-      const n = grid.length
-    let count = 0
-    const rows = new Map()
-
-    for(let r = 0; r < n; r++){
-        const row = JSON.stringify(grid[r])
-        rows.set(row, 1 + (rows.get(row) || 0))
+  // 열들을 문자열로 저장
+  for (let j = 0; j < n; j++) {
+    const col = [];
+    for (let i = 0; i < n; i++) {
+      col.push(grid[i][j]);
     }
+    const colKey = col.join(',');
+    colMap.set(colKey, (colMap.get(colKey) ?? 0) + 1);
+  }
 
-    for(let c = 0; c < n; c++){
-        const col = JSON.stringify(grid.map(row => row[c]))
-        count += (rows.get(col) || 0)
-    }
-    
-    return count
-};
+  // 각 행을 문자열로 만들어서 colMap에 있는지 확인
+  let result = 0;
+  for (let i = 0; i < n; i++) {
+    const rowKey = grid[i].join(',');
+    result += colMap.get(rowKey) ?? 0;
+  }
+
+  return result;
+}
