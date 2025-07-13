@@ -1,36 +1,26 @@
-/**
- * @param {string} s
- * @param {number} k
- * @return {number}
- */
-var maxVowels = function (s, k) {
-    s = s.toString();
-    let subStr = 0;
-    let cnt = 0;
-    let res = 0;
+function maxVowels(s, k) {
+  const vowels = new Set(['a', 'e', 'i', 'o', 'u'])
 
-    while (subStr !== k) {
-        if (isVowel(s[subStr])) {
-            cnt++;
-        }
-        subStr++;
-    }
+  let max = 0 // Max number of vowels in any window
+  let current = 0 // Number of vowels in the current window
 
-    res = Math.max(res, cnt);
+  // Count the total number of vowels from the first window
+  for (let i = 0; i < k; i++) {
+    if (vowels.has(s[i])) max++
+  }
+  
+  if (max === k) return max // Return if the `k` is hit
 
-    for (let i = subStr; i < s.length; i++) {
-        if (isVowel(s[i])) {
-            cnt += 1;
-        }
-        if (isVowel(s[i-k])) {
-            cnt -= 1;
-        } 
-        res = Math.max(res,cnt)
-    }
+  current = max // Set the current to the max
 
-    return res;
+  // Sliding window technique
+  for (let i = 1; i <= s.length - k; i++) {
+    if (vowels.has(s[i - 1])) current-- // Remove the left-most vowel
+    if (vowels.has(s[i + k - 1])) current++ // Add the right-most vowel
+
+    if (current === k) return current // Return if the `k` is hit
+    if (current > max) max = current // Set `max` to the `current` value, if greater
+  }
+
+  return max
 };
-
-function isVowel(char) {
-    return ["a", "e", "i", "o", "u"].includes(char)
-}
